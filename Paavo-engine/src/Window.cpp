@@ -56,7 +56,7 @@ ATOM Window::_registerClass(HINSTANCE _instance)
 
 BOOL Window::_createWindow(const std::string& title)
 {
-	_winTitle = (TCHAR*)std::wstring(title.begin(), title.end()).c_str();
+	_winTitle = std::wstring(title.begin(), title.end());
 	_winInstance = GetModuleHandle(nullptr);
 	_registerClass(_winInstance);
 	return _initInstance(_winInstance, 1);
@@ -66,7 +66,7 @@ BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 {
 	HWND hwnd;
 	AdjustWindowRect(&_winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	hwnd = CreateWindowW(_winClassName, _winTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, _winRect.right, _winRect.bottom, NULL, NULL, instance, NULL);
+	hwnd = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, _winRect.right, _winRect.bottom, NULL, NULL, instance, NULL);
 	if (!hwnd)
 		return FALSE;
 	ShowWindow(hwnd, cmdShow);

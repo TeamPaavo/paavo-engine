@@ -28,7 +28,7 @@ namespace pv {
 	private:
 		// Private members needed for window creation.
 		HINSTANCE _winInstance;
-		TCHAR* _winTitle;
+		std::wstring _winTitle;
 		TCHAR* _winClassName;
 		MSG _winMessage;
 		RECT _winRect;
