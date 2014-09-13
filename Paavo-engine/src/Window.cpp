@@ -4,12 +4,14 @@ using namespace pv;
 
 Window::Window()
 {
+	_isOpen = false;
 	_winClassName = L"Paavo-engine-window";
 }
 
 
 Window::~Window()
 {
+	printf("Menin kiinni, oho %s\n", _winTitle.c_str());
 }
 
 bool Window::create(const std::wstring& title, int width, int height)
@@ -23,13 +25,17 @@ bool Window::create(const std::wstring& title, int width, int height)
 
 bool Window::isOpen()
 {
-	return GetMessage(&_winMessage, NULL, 0, 0);
+	return _isOpen;
+
 }
 
 void Window::update()
 {
-	TranslateMessage(&_winMessage);
-	DispatchMessage(&_winMessage);
+	while (GetMessage(&_winMessage, NULL, 0, 0) > 0)
+	{
+		TranslateMessage(&_winMessage);
+		DispatchMessage(&_winMessage);
+	}
 }
 
 ATOM Window::_registerClass(HINSTANCE _instance)
@@ -39,7 +45,7 @@ ATOM Window::_registerClass(HINSTANCE _instance)
 	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = ::_wndProc;
+	wcex.lpfnWndProc = &Window::_routeWndProc;
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = _instance;
@@ -75,12 +81,14 @@ BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 	hwnd = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
 	if (!hwnd)
 		return FALSE;
+	SetWindowLongPtr(hwnd, GWLP_USERDATA, (long)this);
 	ShowWindow(hwnd, cmdShow);
 	UpdateWindow(hwnd);
+	_isOpen = true;
 	return TRUE;
 }
 
-LRESULT CALLBACK ::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
+int Window::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
@@ -93,10 +101,11 @@ LRESULT CALLBACK ::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lpa
 		wmEvent = HIWORD(wparam);
 	case WM_PAINT:
 		hdc = BeginPaint(window, &ps);
-
+		
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
+		_isOpen = false;
 		PostQuitMessage(0);
 		break;
 	default:
@@ -104,4 +113,13 @@ LRESULT CALLBACK ::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lpa
 	}
 
 	return 0;
+}
+
+LRESULT CALLBACK Window::_routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
+{
+	Window* w = (Window*)GetWindowLongPtr(window, GWLP_USERDATA);
+	if (w == NULL) {
+		return DefWindowProc(window, message, wparam, lparam);
+	}
+	return w->_wndProc(window, message, wparam, lparam);
 }

@@ -10,12 +10,6 @@
 
 namespace pv {
 
-	// anonymous namespace for window event handling
-	// TODO: Try to get this function inside the class so each window has its own event handling method.
-	namespace {
-		LRESULT CALLBACK _wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
-	}
-
 	class PAAVO_EXPORT Window
 	{
 	public:
@@ -36,11 +30,18 @@ namespace pv {
 		int _winWidth;
 		int _winHeight;
 
+		// Privat members needed for handling window object
+		bool _isOpen;
+
 		// Private methods for window creation.
 		BOOL _createWindow();
 		ATOM _registerClass(HINSTANCE instance);
 		BOOL _initInstance(HINSTANCE instance, int cmdShow);
+		virtual int _wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 
+		// This method gets current windows handle and our stored pointer to its class and then routes
+		// event handling to the objects own wndProc -method.
+		static LRESULT CALLBACK _routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 	};
 
 } // namespace pv
