@@ -12,14 +12,13 @@ Window::~Window()
 {
 }
 
-bool Window::create(const std::string& title, int width, int height)
+bool Window::create(const std::wstring& title, int width, int height)
 {
-	_winRect.left = 0;
-	_winRect.top = 0;
-	_winRect.right = width;
-	_winRect.bottom = height;
-	_createWindow(title);
-	return true;
+	_winTitle = title;
+	_winWidth = width;
+	_winHeight = height;
+	
+	return _createWindow();
 }
 
 bool Window::isOpen()
@@ -54,9 +53,9 @@ ATOM Window::_registerClass(HINSTANCE _instance)
 	return RegisterClassEx(&wcex);
 }
 
-BOOL Window::_createWindow(const std::string& title)
+BOOL Window::_createWindow()
 {
-	_winTitle = std::wstring(title.begin(), title.end());
+	
 	_winInstance = GetModuleHandle(nullptr);
 	_registerClass(_winInstance);
 	return _initInstance(_winInstance, 1);
@@ -65,8 +64,15 @@ BOOL Window::_createWindow(const std::string& title)
 BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 {
 	HWND hwnd;
-	AdjustWindowRect(&_winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	hwnd = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, _winRect.right, _winRect.bottom, NULL, NULL, instance, NULL);
+
+	RECT winRect;
+	winRect.left = 0;
+	winRect.top = 0;
+	winRect.right = _winWidth;
+	winRect.bottom = _winHeight;
+
+	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
+	hwnd = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
 	if (!hwnd)
 		return FALSE;
 	ShowWindow(hwnd, cmdShow);

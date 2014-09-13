@@ -3,8 +3,8 @@
 int main()
 {
 	pv::Window win;
-	win.create("Otsikko", 300, 300);
-	
+	win.create(L"Ötsikkö", 300, 300);
+
 	while (win.isOpen())
 	{
 		win.update();
