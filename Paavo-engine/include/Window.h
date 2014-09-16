@@ -18,20 +18,18 @@ namespace pv {
 
 		// Public methods.
 		bool create(const std::wstring& title, int width, int height);
-		void update();
-		bool isOpen();
+		bool update();
+
 
 	private:
 		// Private members needed for window creation.
+		HWND _winHandle;
 		HINSTANCE _winInstance;
 		std::wstring _winTitle;
 		TCHAR* _winClassName;
 		MSG _winMessage;
 		int _winWidth;
 		int _winHeight;
-
-		// Privat members needed for handling window object
-		bool _isOpen;
 
 		// Private methods for window creation.
 		BOOL _createWindow();
