@@ -4,14 +4,13 @@ using namespace pv;
 
 Window::Window()
 {
-	_isOpen = false;
 	_winClassName = L"Paavo-engine-window";
 }
 
 
 Window::~Window()
 {
-	printf("Menin kiinni, oho %s\n", _winTitle.c_str());
+
 }
 
 bool Window::create(const std::wstring& title, int width, int height)
@@ -19,23 +18,20 @@ bool Window::create(const std::wstring& title, int width, int height)
 	_winTitle = title;
 	_winWidth = width;
 	_winHeight = height;
-	
+
 	return _createWindow();
 }
 
-bool Window::isOpen()
+bool Window::update()
 {
-	return _isOpen;
-
-}
-
-void Window::update()
-{
-	while (GetMessage(&_winMessage, NULL, 0, 0) > 0)
+	while (PeekMessageW(&_winMessage, NULL, 0, 0, PM_REMOVE) > 0)
 	{
+		if (_winMessage.message == WM_QUIT)
+			return false;
 		TranslateMessage(&_winMessage);
 		DispatchMessage(&_winMessage);
 	}
+	return true;
 }
 
 ATOM Window::_registerClass(HINSTANCE _instance)
@@ -61,7 +57,7 @@ ATOM Window::_registerClass(HINSTANCE _instance)
 
 BOOL Window::_createWindow()
 {
-	
+
 	_winInstance = GetModuleHandle(nullptr);
 	_registerClass(_winInstance);
 	return _initInstance(_winInstance, 1);
@@ -69,7 +65,6 @@ BOOL Window::_createWindow()
 
 BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 {
-	HWND hwnd;
 
 	RECT winRect;
 	winRect.left = 0;
@@ -78,13 +73,12 @@ BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 	winRect.bottom = _winHeight;
 
 	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	hwnd = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
-	if (!hwnd)
+	_winHandle = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
+	if (!_winHandle)
 		return FALSE;
-	SetWindowLongPtr(hwnd, GWLP_USERDATA, (long)this);
-	ShowWindow(hwnd, cmdShow);
-	UpdateWindow(hwnd);
-	_isOpen = true;
+	SetWindowLongPtr(_winHandle, GWLP_USERDATA, (long)this);
+	ShowWindow(_winHandle, cmdShow);
+	UpdateWindow(_winHandle);
 	return TRUE;
 }
 
@@ -101,14 +95,14 @@ int Window::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		wmEvent = HIWORD(wparam);
 	case WM_PAINT:
 		hdc = BeginPaint(window, &ps);
-		
+
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
-		_isOpen = false;
 		PostQuitMessage(0);
 		break;
 	default:
+
 		return DefWindowProc(window, message, wparam, lparam);
 	}
 
