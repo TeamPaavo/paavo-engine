@@ -1,5 +1,4 @@
-#ifndef PAAVO_WINDOW_H
-#define PAAVO_WINDOW_H
+#pragma once
 
 #define PAAVO_EXPORT __declspec(dllexport)
 #define PAAVO_IMPORT __declspec(dllimport)
@@ -9,15 +8,45 @@
 #include <tchar.h>
 
 namespace pv {
-
+	/**
+	 * Class for creating and handling windows.
+	 */
 	class PAAVO_EXPORT Window
 	{
 	public:
+		/**
+		 * Constructor
+		 */
 		Window();
+
+		/**
+		* Constructor overload to create and show window when initialized.
+		* Warning: No indication if window creation is not successfull.
+		*
+		* @param	title	Window title
+		* @param	width	Window width
+		* @param	height	Window height
+		*/
+		Window(const std::wstring& title, int width, int height);
 		~Window();
 
 		// Public methods.
+
+		/**
+		 * Create and show window.
+		 * 
+		 * @param	title	Window title
+		 * @param	width	Window width
+		 * @param	height	Window height
+		 * @return	True if window creation is successfull
+		 */
 		bool create(const std::wstring& title, int width, int height);
+
+		/**
+		 * Update window events. Important to run every frame.
+		 *
+		 * @return	True if window is still open.
+		 */
 		bool update();
 
 
@@ -43,5 +72,3 @@ namespace pv {
 	};
 
 } // namespace pv
-
-#endif // PAAVO_WINDOW_H

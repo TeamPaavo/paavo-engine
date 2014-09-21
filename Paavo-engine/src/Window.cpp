@@ -7,6 +7,12 @@ Window::Window()
 	_winClassName = L"Paavo-engine-window";
 }
 
+Window::Window(const std::wstring& title, int width, int height)
+{
+	_winClassName = L"Paavo-engine-window";
+	create(title, width, height);
+}
+
 
 Window::~Window()
 {

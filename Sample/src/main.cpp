@@ -1,9 +1,11 @@
 #include "Window.h"
+#include <assert.h>
 
 int main()
 {
-	pv::Window win;
-	win.create(L"Ötsikkö", 300, 300);
+	pv::Window win(L"Äö", 800, 600);
+
+	assert(true);
 
 	while (win.update()){
 
