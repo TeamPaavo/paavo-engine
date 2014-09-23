@@ -28,6 +28,10 @@ namespace pv {
 		* @param	height	Window height
 		*/
 		Window(const std::wstring& title, int width, int height);
+
+		/**
+		* Destructor
+		*/
 		~Window();
 
 		// Public methods.
@@ -85,14 +89,14 @@ namespace pv {
 
 
 		// Private methods for window creation.
-		BOOL _createWindow();
-		ATOM _registerClass(HINSTANCE instance);
-		BOOL _initInstance(HINSTANCE instance, int cmdShow);
-		virtual int _wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+		BOOL createWindow();
+		ATOM registerClass(HINSTANCE instance);
+		BOOL initInstance(HINSTANCE instance, int cmdShow);
+		virtual int wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 
 		// This method gets current windows handle and our stored pointer to its class and then routes
 		// event handling to the objects own wndProc -method.
-		static LRESULT CALLBACK _routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+		static LRESULT CALLBACK routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 	};
 
 } // namespace pv

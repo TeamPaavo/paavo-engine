@@ -3,6 +3,8 @@
 
 using namespace pv;
 
+// Constructors & Destructor
+
 Window::Window()
 {
 	_winClassName = L"Paavo-engine-window";
@@ -14,12 +16,13 @@ Window::Window(const std::wstring& title, int width, int height)
 	create(title, width, height);
 }
 
-
 Window::~Window()
 {
 	
 
 }
+
+// Public methods
 
 bool Window::create(const std::wstring& title, int width, int height)
 {
@@ -27,7 +30,7 @@ bool Window::create(const std::wstring& title, int width, int height)
 	_winWidth = width;
 	_winHeight = height;
 
-	return _createWindow();
+	return createWindow();
 }
 
 bool Window::update()
@@ -42,14 +45,35 @@ bool Window::update()
 	return true;
 }
 
-ATOM Window::_registerClass(HINSTANCE _instance)
+void Window::clearColor(float r, float g, float b, float a)
+{
+	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::swap()
+{
+	SwapBuffers(_hDc);
+}
+
+// Private methods
+
+BOOL Window::createWindow()
+{
+
+	_winInstance = GetModuleHandle(nullptr);
+	registerClass(_winInstance);
+	return initInstance(_winInstance, 1);
+}
+
+ATOM Window::registerClass(HINSTANCE _instance)
 {
 	WNDCLASSEX wcex;
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = &Window::_routeWndProc;
+	wcex.lpfnWndProc = &Window::routeWndProc;
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = _instance;
@@ -63,15 +87,7 @@ ATOM Window::_registerClass(HINSTANCE _instance)
 	return RegisterClassEx(&wcex);
 }
 
-BOOL Window::_createWindow()
-{
-
-	_winInstance = GetModuleHandle(nullptr);
-	_registerClass(_winInstance);
-	return _initInstance(_winInstance, 1);
-}
-
-BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
+BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 {
 
 	RECT winRect;
@@ -109,7 +125,7 @@ BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 	return TRUE;
 }
 
-int Window::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
+int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
@@ -138,22 +154,11 @@ int Window::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 	return 0;
 }
 
-LRESULT CALLBACK Window::_routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK Window::routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	Window* w = (Window*)GetWindowLongPtr(window, GWLP_USERDATA);
 	if (w == NULL) {
 		return DefWindowProc(window, message, wparam, lparam);
 	}
-	return w->_wndProc(window, message, wparam, lparam);
-}
-
-void Window::clearColor(float r, float g, float b, float a)
-{
-	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void Window::swap()
-{
-	SwapBuffers(_hDc);
+	return w->wndProc(window, message, wparam, lparam);
 }
