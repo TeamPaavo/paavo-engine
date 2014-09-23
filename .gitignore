@@ -184,3 +184,5 @@ FakesAssemblies/
 *.filters
 *.sln
 *.vcxproj
+Documentation
+/Paavo-engine/Doxyfile

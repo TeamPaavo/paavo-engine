@@ -1,14 +1,12 @@
 #include "Window.h"
-#include <assert.h>
 
 int main()
 {
-	pv::Window win(L"Ã„Ã¶", 800, 600);
-
-	assert(true);
+	pv::Window win(L"ÄÖ", 800, 600);
 
 	while (win.update()){
-
+		win.clearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		win.swap();
 	}
 
 	return 0;

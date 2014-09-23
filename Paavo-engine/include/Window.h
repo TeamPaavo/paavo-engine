@@ -15,7 +15,7 @@ namespace pv {
 	{
 	public:
 		/**
-		 * Constructor
+		 * Default constructor.
 		 */
 		Window();
 
@@ -49,6 +49,23 @@ namespace pv {
 		 */
 		bool update();
 
+		/**
+		 * Clear screen with color.
+		 * Values from 0.0 to 1.0.
+		 *
+		 * @param	r	Red
+		 * @param	g	Green
+		 * @param	b	Blue
+		 * @param	a	Alpha
+		 */
+		void clearColor(float r, float g, float b, float a);
+
+		/**
+		* Swap buffers.
+		*/
+		void swap();
+
+
 
 	private:
 		// Private members needed for window creation.
@@ -57,8 +74,15 @@ namespace pv {
 		std::wstring _winTitle;
 		TCHAR* _winClassName;
 		MSG _winMessage;
+
+		HDC _hDc;
+		HGLRC _hGlrc;
+		PIXELFORMATDESCRIPTOR _pfd;
+		int _pixelFormat;
+
 		int _winWidth;
 		int _winHeight;
+
 
 		// Private methods for window creation.
 		BOOL _createWindow();

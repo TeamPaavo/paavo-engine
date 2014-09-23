@@ -1,4 +1,5 @@
 #include "..\include\Window.h"
+#include <gl\GL.h>
 
 using namespace pv;
 
@@ -16,6 +17,7 @@ Window::Window(const std::wstring& title, int width, int height)
 
 Window::~Window()
 {
+	
 
 }
 
@@ -82,6 +84,25 @@ BOOL Window::_initInstance(HINSTANCE instance, int cmdShow)
 	_winHandle = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
 	if (!_winHandle)
 		return FALSE;
+
+	// Device hande
+	_hDc = GetDC(_winHandle);
+
+	// Set pixeformat data
+	_pfd.nSize = sizeof(_pfd);
+	_pfd.nVersion = 1;
+	_pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
+	_pfd.iPixelType = PFD_TYPE_RGBA;
+	_pfd.cColorBits = 24;
+	_pfd.cDepthBits = 24;
+
+	_pixelFormat = ChoosePixelFormat(_hDc, &_pfd);
+	SetPixelFormat(_hDc, _pixelFormat, &_pfd);
+
+	// Create OpenGL context
+	_hGlrc = wglCreateContext(_hDc);
+	wglMakeCurrent(_hDc, _hGlrc);
+
 	SetWindowLongPtr(_winHandle, GWLP_USERDATA, (long)this);
 	ShowWindow(_winHandle, cmdShow);
 	UpdateWindow(_winHandle);
@@ -105,6 +126,8 @@ int Window::_wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
+		wglMakeCurrent(_hDc, nullptr);
+		wglDeleteContext(_hGlrc);
 		PostQuitMessage(0);
 		break;
 	default:
@@ -122,4 +145,15 @@ LRESULT CALLBACK Window::_routeWndProc(HWND window, UINT message, WPARAM wparam,
 		return DefWindowProc(window, message, wparam, lparam);
 	}
 	return w->_wndProc(window, message, wparam, lparam);
+}
+
+void Window::clearColor(float r, float g, float b, float a)
+{
+	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::swap()
+{
+	SwapBuffers(_hDc);
 }
