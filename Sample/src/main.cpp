@@ -6,6 +6,7 @@ int main()
 
 	while (win.update()){
 		win.clearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		win.draw();
 		win.swap();
 	}
 

@@ -1,5 +1,6 @@
 #include "..\include\Window.h"
-#include <gl\GL.h>
+#include <gl\glew.h>
+#include <GL\wglew.h>
 
 using namespace pv;
 
@@ -54,6 +55,34 @@ void Window::clearColor(float r, float g, float b, float a)
 void Window::swap()
 {
 	SwapBuffers(_hDc);
+}
+
+void Window::draw()
+{
+	float vertices[] = {
+		0.0f, 0.5f, // Vertex 1 (X, Y)
+		0.5f, -0.5f, // Vertex 2 (X, Y)
+		-0.5f, -0.5f  // Vertex 3 (X, Y)
+	};
+
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	
+	GLint posAttrib = glGetAttribLocation(_defaultShader.getProgram(), "position");
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(posAttrib);
+
+	_defaultShader.use();
+
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 // Private methods
@@ -118,6 +147,11 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	// Create OpenGL context
 	_hGlrc = wglCreateContext(_hDc);
 	wglMakeCurrent(_hDc, _hGlrc);
+
+	glewInit();
+	
+	_defaultShader.load("shaders/vertexshader.glsl", "shaders/fragmentshader.glsl");
+	//_defaultShader.use();
 
 	SetWindowLongPtr(_winHandle, GWLP_USERDATA, (long)this);
 	ShowWindow(_winHandle, cmdShow);

@@ -7,6 +7,8 @@
 #include <Windows.h>
 #include <tchar.h>
 
+#include "Shader.h"
+
 namespace pv {
 	/**
 	 * Class for creating and handling windows.
@@ -69,6 +71,8 @@ namespace pv {
 		*/
 		void swap();
 
+		void draw();
+
 
 
 	private:
@@ -84,6 +88,8 @@ namespace pv {
 		PIXELFORMATDESCRIPTOR _pfd;
 		int _pixelFormat;
 
+		Shader _defaultShader;
+
 		int _winWidth;
 		int _winHeight;
 
@@ -97,6 +103,7 @@ namespace pv {
 		// This method gets current windows handle and our stored pointer to its class and then routes
 		// event handling to the objects own wndProc -method.
 		static LRESULT CALLBACK routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+
 	};
 
 } // namespace pv
