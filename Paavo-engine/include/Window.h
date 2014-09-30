@@ -1,13 +1,12 @@
 #pragma once
 
-#define PAAVO_EXPORT __declspec(dllexport)
-#define PAAVO_IMPORT __declspec(dllimport)
-
 #include <string>
 #include <Windows.h>
 #include <tchar.h>
 
-#include "Shader.h"
+#include "defines.h"
+
+#include "GLContext.h"
 
 namespace pv {
 	/**
@@ -71,6 +70,9 @@ namespace pv {
 		*/
 		void swap();
 
+		/**
+		 * Draw whats in framebuffer.
+		 */
 		void draw();
 
 
@@ -83,12 +85,7 @@ namespace pv {
 		TCHAR* _winClassName;
 		MSG _winMessage;
 
-		HDC _hDc;
-		HGLRC _hGlrc;
-		PIXELFORMATDESCRIPTOR _pfd;
-		int _pixelFormat;
-
-		Shader _defaultShader;
+		GLContext _glContext;
 
 		int _winWidth;
 		int _winHeight;

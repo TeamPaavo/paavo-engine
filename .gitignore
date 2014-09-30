@@ -186,3 +186,4 @@ FakesAssemblies/
 *.vcxproj
 Documentation
 /Paavo-engine/Doxyfile
+ext/
