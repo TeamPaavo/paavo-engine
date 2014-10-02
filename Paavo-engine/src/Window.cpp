@@ -100,7 +100,7 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	winRect.bottom = _winHeight;
 
 	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	_winHandle = CreateWindowW(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
+	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
 	if (!_winHandle)
 		return FALSE;
 

@@ -35,6 +35,14 @@ void GLContext::init(HWND handle)
 
 	glewInit();
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_CULL_FACE);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 	_defaultShader.load("shaders/vertexshader.glsl", "shaders/fragmentshader.glsl");
 	_defaultShader.use();
 }
@@ -42,15 +50,15 @@ void GLContext::init(HWND handle)
 void GLContext::clearColor(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GLContext::render()
 {
 	float vertices[] = {
 		0.0f, 0.5f,
-		0.5f, -0.5f,
-		-0.5f, -0.5f
+		-0.5f, -0.5f,
+		0.5f, -0.5f
 	};
 
 	GLuint vbo;

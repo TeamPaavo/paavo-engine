@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Paavo-engine", "Paavo-engine.vcxproj", "{AF08302E-ED38-45D4-93F7-062AF0070C98}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample", "Sample\Sample.vcxproj", "{9863C042-68C1-47BA-9E8F-02BD946E296B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF08302E-ED38-45D4-93F7-062AF0070C98}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AF08302E-ED38-45D4-93F7-062AF0070C98}.Debug|Win32.Build.0 = Debug|Win32
+		{AF08302E-ED38-45D4-93F7-062AF0070C98}.Release|Win32.ActiveCfg = Release|Win32
+		{AF08302E-ED38-45D4-93F7-062AF0070C98}.Release|Win32.Build.0 = Release|Win32
+		{9863C042-68C1-47BA-9E8F-02BD946E296B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9863C042-68C1-47BA-9E8F-02BD946E296B}.Debug|Win32.Build.0 = Debug|Win32
+		{9863C042-68C1-47BA-9E8F-02BD946E296B}.Release|Win32.ActiveCfg = Release|Win32
+		{9863C042-68C1-47BA-9E8F-02BD946E296B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
