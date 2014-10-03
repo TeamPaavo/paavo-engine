@@ -90,6 +90,15 @@ ATOM Window::registerClass(HINSTANCE _instance)
 	return RegisterClassEx(&wcex);
 }
 
+int Window::setWindowSize(int Width, int Height)
+{
+	Width = 300;
+	Height = 300;
+	_winWidth == Width;
+	_winHeight == Height;
+
+}
+
 BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 {
 
@@ -112,6 +121,21 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	return TRUE;
 }
 
+int Window::close()
+{
+	_glContext.clean();
+	PostQuitMessage(0);
+}
+
+int Window::setWindowSize(int Width, int Height)
+{
+	Width = 300;
+	Height = 300;
+	_winWidth == Width;
+	_winHeight == Height;
+
+}
+
 int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
@@ -129,8 +153,7 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
-		_glContext.clean();
-		PostQuitMessage(0);
+		close();
 		break;
 	default:
 

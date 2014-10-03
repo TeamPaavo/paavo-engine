@@ -19,7 +19,7 @@ namespace pv {
 		 * Default constructor.
 		 */
 		Window();
-
+		int close();
 		/**
 		* Constructor overload to create and show window when initialized.
 		* Warning: No indication if window creation is not successfull.
@@ -75,6 +75,7 @@ namespace pv {
 		 */
 		void draw();
 
+		int setWindowSize(int Width, int Height);
 
 
 	private:
