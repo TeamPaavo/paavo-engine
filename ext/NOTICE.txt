@@ -2,6 +2,14 @@ Add glew-1.11.0 and glm 0.9.5.4 here!
 
 /ext/glew-1.11.0
 /ext/glm
+/ext/FreeImage
 
+
+//GLEW
 http://sourceforge.net/projects/glew/files/glew/1.11.0/glew-1.11.0.zip/download
+
+//GLM
 http://sourceforge.net/projects/ogl-math/files/glm-0.9.5.4/
+
+//FreeImage
+http://sourceforge.net/projects/freeimage/files/Binary%20Distribution/3.16.0/FreeImage3160Win32.zip/download?use_mirror=softlayer-ams
