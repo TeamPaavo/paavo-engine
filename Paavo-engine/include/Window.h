@@ -12,11 +12,6 @@ namespace pv {
 	/**
 	 * Class for creating and handling windows.
 	 */
-	enum WINDOW_STYLE
-	{
-		NORMAL,
-		DRAGGABLE,
-	};
 	class PAAVO_EXPORT Window
 	{
 	public:
@@ -73,7 +68,7 @@ namespace pv {
 		* Swap buffers.
 		*/
 		void swap();
-
+		
 		/**
 		 * Draw whats in framebuffer.
 		 */
@@ -86,6 +81,10 @@ namespace pv {
 		* Changes the window size.
 		*/
 		bool setSize(int width, int height);
+		/**
+		* Closes the window.
+		*/
+		void close();
 		
 
 

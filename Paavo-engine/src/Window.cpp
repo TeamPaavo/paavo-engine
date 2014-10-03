@@ -72,6 +72,12 @@ bool Window::setSize(int width, int height)
 	return SetWindowPos(_winHandle, HWND_TOPMOST, NULL, NULL, _winWidth, _winHeight, SWP_NOMOVE);
 }
 
+void Window::close()
+{
+	_glContext.clean();
+	PostQuitMessage(0);
+}
+
 // Private methods
 
 BOOL Window::createWindow()
@@ -143,8 +149,7 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
-		_glContext.clean();
-		PostQuitMessage(0);
+		close();
 		break;
 	default:
 
