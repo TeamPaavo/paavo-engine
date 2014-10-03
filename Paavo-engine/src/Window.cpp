@@ -78,6 +78,10 @@ void Window::close()
 	PostQuitMessage(0);
 }
 
+void Window::setPosition(int x, int y)
+{
+	SetWindowPos(_winHandle, HWND_TOPMOST, x, y, NULL, NULL, SWP_NOSIZE);
+}
 // Private methods
 
 BOOL Window::createWindow()

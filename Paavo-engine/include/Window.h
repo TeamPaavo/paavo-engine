@@ -85,6 +85,13 @@ namespace pv {
 		* Closes the window.
 		*/
 		void close();
+
+		/**
+		* Sets the position of the window.
+		*/
+		void setPosition(int x, int y);
+
+
 		
 
 
@@ -95,10 +102,8 @@ namespace pv {
 		std::wstring _winTitle;
 		TCHAR* _winClassName;
 		MSG _winMessage;
-		std::wstring _title;
 		GLContext _glContext;
 		
-		int _winStyle;
 		int _winWidth;
 		int _winHeight;
 
