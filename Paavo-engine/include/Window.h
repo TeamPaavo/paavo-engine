@@ -12,6 +12,11 @@ namespace pv {
 	/**
 	 * Class for creating and handling windows.
 	 */
+	enum WINDOW_STYLE
+	{
+		NORMAL,
+		DRAGGABLE,
+	};
 	class PAAVO_EXPORT Window
 	{
 	public:
@@ -19,7 +24,7 @@ namespace pv {
 		 * Default constructor.
 		 */
 		Window();
-		int close();
+
 		/**
 		* Constructor overload to create and show window when initialized.
 		* Warning: No indication if window creation is not successfull.
@@ -28,7 +33,7 @@ namespace pv {
 		* @param	width	Window width
 		* @param	height	Window height
 		*/
-		Window(const std::wstring& title, int width, int height);
+		Window(const std::string& title, int width, int height);
 
 		/**
 		* Destructor
@@ -45,7 +50,7 @@ namespace pv {
 		 * @param	height	Window height
 		 * @return	True if window creation is successfull
 		 */
-		bool create(const std::wstring& title, int width, int height);
+		bool create(const std::string& title, int width, int height);
 
 		/**
 		 * Update window events. Important to run every frame.
@@ -64,7 +69,6 @@ namespace pv {
 		 * @param	a	Alpha
 		 */
 		void clearColor(float r, float g, float b, float a);
-
 		/**
 		* Swap buffers.
 		*/
@@ -74,8 +78,15 @@ namespace pv {
 		 * Draw whats in framebuffer.
 		 */
 		void draw();
-
-		int setWindowSize(int Width, int Height);
+		/**
+		* Changes the title.
+		*/
+		void setTitle(std::string title);
+		/**
+		* Changes the window size.
+		*/
+		bool setSize(int width, int height);
+		
 
 
 	private:
@@ -85,12 +96,12 @@ namespace pv {
 		std::wstring _winTitle;
 		TCHAR* _winClassName;
 		MSG _winMessage;
-
+		std::wstring _title;
 		GLContext _glContext;
-
+		
+		int _winStyle;
 		int _winWidth;
 		int _winHeight;
-
 
 		// Private methods for window creation.
 		BOOL createWindow();

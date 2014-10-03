@@ -9,7 +9,7 @@ Window::Window()
 	_winClassName = L"Paavo-engine-window";
 }
 
-Window::Window(const std::wstring& title, int width, int height)
+Window::Window(const std::string& title, int width, int height)
 {
 	_winClassName = L"Paavo-engine-window";
 	create(title, width, height);
@@ -23,9 +23,9 @@ Window::~Window()
 
 // Public methods
 
-bool Window::create(const std::wstring& title, int width, int height)
+bool Window::create(const std::string& title, int width, int height)
 {
-	_winTitle = title;
+	_winTitle = std::wstring(title.begin(),title.end());
 	_winWidth = width;
 	_winHeight = height;
 
@@ -59,11 +59,23 @@ void Window::draw()
 	_glContext.render();
 }
 
+void Window::setTitle(std::string title)
+{
+	_winTitle = std::wstring(title.begin(), title.end());
+	SetWindowText(_winHandle, _winTitle.c_str());
+}
+
+bool Window::setSize(int width, int height)
+{
+	_winWidth = width;
+	_winHeight = height;
+	return SetWindowPos(_winHandle, HWND_TOPMOST, NULL, NULL, _winWidth, _winHeight, SWP_NOMOVE);
+}
+
 // Private methods
 
 BOOL Window::createWindow()
 {
-
 	_winInstance = GetModuleHandle(nullptr);
 	registerClass(_winInstance);
 	return initInstance(_winInstance, 1);
@@ -90,15 +102,6 @@ ATOM Window::registerClass(HINSTANCE _instance)
 	return RegisterClassEx(&wcex);
 }
 
-int Window::setWindowSize(int Width, int Height)
-{
-	Width = 300;
-	Height = 300;
-	_winWidth == Width;
-	_winHeight == Height;
-
-}
-
 BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 {
 
@@ -109,7 +112,8 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	winRect.bottom = _winHeight;
 
 	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
+	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(),	WS_CAPTION |WS_SYSMENU |WS_MINIMIZEBOX|WS_MAXIMIZEBOX , CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
+
 	if (!_winHandle)
 		return FALSE;
 
@@ -118,22 +122,8 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	SetWindowLongPtr(_winHandle, GWLP_USERDATA, (long)this);
 	ShowWindow(_winHandle, cmdShow);
 	UpdateWindow(_winHandle);
+	
 	return TRUE;
-}
-
-int Window::close()
-{
-	_glContext.clean();
-	PostQuitMessage(0);
-}
-
-int Window::setWindowSize(int Width, int Height)
-{
-	Width = 300;
-	Height = 300;
-	_winWidth == Width;
-	_winHeight == Height;
-
 }
 
 int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
@@ -153,7 +143,8 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		EndPaint(window, &ps);
 		break;
 	case WM_DESTROY:
-		close();
+		_glContext.clean();
+		PostQuitMessage(0);
 		break;
 	default:
 
