@@ -53,24 +53,9 @@ void GLContext::clearColor(float r, float g, float b, float a)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GLContext::render()
+void GLContext::render(std::vector<float>& vertices, std::vector<unsigned int>& elements)
 {
-	float vertices[] = {
-		0.0f, 0.5f,
-		-0.5f, -0.5f,
-		0.5f, -0.5f
-	};
 
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	GLint posAttrib = glGetAttribLocation(_defaultShader.getProgram(), "position");
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(posAttrib);
-
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void GLContext::swap()
@@ -82,4 +67,9 @@ void GLContext::clean()
 {
 	wglMakeCurrent(_hDc, nullptr);
 	wglDeleteContext(_hGlrc);
+}
+
+GLuint GLContext::getShader()
+{
+	return _defaultShader.getProgram();
 }

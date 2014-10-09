@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <Windows.h>
 #include <GL/glew.h>
 
@@ -35,7 +36,7 @@ namespace pv
 		/**
 		* Render to framebuffer
 		*/
-		void render();
+		void render(std::vector<float>& vertices, std::vector<unsigned int>& elements);
 
 		/**
 		* Swap buffers. Shows what is drawn to framebuffer.
@@ -46,6 +47,8 @@ namespace pv
 		* Remove context.
 		*/
 		void clean();
+
+		GLuint getShader();
 
 	private:
 		HWND _winHandle;

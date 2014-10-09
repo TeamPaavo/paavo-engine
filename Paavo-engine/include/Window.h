@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <tchar.h>
 
+#include <vector>
+
 #include "defines.h"
 
 #include "GLContext.h"
@@ -72,7 +74,7 @@ namespace pv {
 		/**
 		 * Draw whats in framebuffer.
 		 */
-		void draw();
+		void draw(std::vector<float>& vertices, std::vector<unsigned int>& elements);
 		/**
 		* Changes the title.
 		*/
@@ -92,7 +94,7 @@ namespace pv {
 		void setPosition(int x, int y);
 
 
-		
+		GLuint getShader();
 
 
 	private:

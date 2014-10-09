@@ -54,9 +54,9 @@ void Window::swap()
 	_glContext.swap();
 }
 
-void Window::draw()
+void Window::draw(std::vector<float>& vertices, std::vector<unsigned int>& elements)
 {
-	_glContext.render();
+	_glContext.render(vertices, elements);
 }
 
 void Window::setTitle(std::string title)
@@ -82,6 +82,12 @@ void Window::setPosition(int x, int y)
 {
 	SetWindowPos(_winHandle, HWND_TOPMOST, x, y, NULL, NULL, SWP_NOSIZE);
 }
+
+GLuint Window::getShader()
+{
+	return _glContext.getShader();
+}
+
 // Private methods
 
 BOOL Window::createWindow()

@@ -30,9 +30,6 @@
     <ClCompile Include="..\..\Paavo-engine\src\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Paavo-engine\src\Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Paavo-engine\src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,9 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Paavo-engine\include\Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Paavo-engine\include\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Paavo-engine\include\Texture.h">
