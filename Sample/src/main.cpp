@@ -2,7 +2,7 @@
 #include "Rect.h"
 
 #include <GL\glew.h>
-#include <FreeImage.h>
+#include "..\FreeImage\Dist\FreeImage.h"
 
 int main()
 {

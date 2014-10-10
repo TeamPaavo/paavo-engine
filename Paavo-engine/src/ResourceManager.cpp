@@ -70,7 +70,52 @@ template<class RM> void ResourceManager<RM>::Remove(const unsigned int handle)
 	}
 }
 
-template<class RM> RM ResourceManager::~ResourceManager()
+template<class RM> unsigned int ResourceManager<RM>::Add(const std::string& name, const std::string& filePath = "./")
+{
+	if (_pointerList == NULL || managerName.empty() || managerFilePath.empty())
+		return -1;
+
+	RM *element = GetElement(name, managerFilePath);
+	if (element != NULL)
+	{
+		element->incrementReference();
+		return element->GetHandle();
+	}
+
+
+	bool handleAvaivable = !_handles.empty();
+	unsigned int handle;
+
+	if (handleAvaivable)
+	{
+		_handles.top();
+		_handles.pop();
+	}
+
+	else handle = _pointerList->size();
+
+
+	RM *resource = NULL;
+	if (CreateResource != NULL)
+	CreateResource(&resource, handle, name, filePath);
+	else
+	resource = new RM(handle, name, filePath);
+
+	if (handleAvaivable)
+		*_pointerList->push_back(resource);
+
+	return handle;
+}
+
+template<class RM> RM* ResourceManager<RM>::operator[] (unsigned int handle)
+{
+	if (handle < _pointerList->size() && handle >= 0)
+		return(*_pointerList)[handle];
+
+	return NULL;
+}
+
+template<class RM> ResourceManager<RM>::~ResourceManager()
 {
 	EmptyList();
 	delete _pointeList;

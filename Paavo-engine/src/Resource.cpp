@@ -1,20 +1,20 @@
-#include "Resource.h"
+#include "..\..\Paavo-engine\include\Resource.h"
 
 
 using namespace pv;
 
-Resource::Resource(const unsigned int handle, const std::string& name, const std::string& filePath = "./")
+Resource::Resource(const unsigned int resourceHandle, const std::string& resourceName, const std::string& resourceFilePath = "./")
 {
 	if (!_name.empty())
-		_name = name;
+		_name = resourceName;
 
 	if (!_filePath.empty())
-		_filePath = filePath;
+		_filePath = resourceFilePath;
 
-	_handle = handle;
+	_handle = resourceHandle;
 
-	if (!name.empty() && !_filePath.empty())
-		_fileName = filePath + name;
+	if (!resourceName.empty() && !_filePath.empty())
+		_fileName = resourceFilePath + resourceName;
 
 	_referenceCount = 1;
 

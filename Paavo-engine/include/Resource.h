@@ -1,13 +1,13 @@
 #pragma once
 
 #include <string>
-
+#
 namespace pv
 {
 	class Resource
 	{
 	public:
-		Resource(const unsigned int handle, const std::string&, const std::string& path = "./");
+		Resource(const unsigned int resourceHandle, const std::string& resourceName, const std::string& resourceFilePath);
 
 		void DecrementReference();
 		void IncrementReference();
