@@ -93,6 +93,7 @@ namespace pv {
 		*/
 		void setPosition(int x, int y);
 
+		bool setFullscreen(bool fullscreen);
 
 		GLuint getShader();
 
@@ -105,9 +106,13 @@ namespace pv {
 		TCHAR* _winClassName;
 		MSG _winMessage;
 		GLContext _glContext;
-		
+		HDC _hdc;
+		WNDCLASSEX _wcex;
+		RECT _winRect;
+		WNDCLASSEX _savedWindowClass;
 		int _winWidth;
 		int _winHeight;
+		bool _fullscreen;
 
 		// Private methods for window creation.
 		BOOL createWindow();

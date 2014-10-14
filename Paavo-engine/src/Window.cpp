@@ -28,6 +28,7 @@ bool Window::create(const std::string& title, int width, int height)
 	_winTitle = std::wstring(title.begin(),title.end());
 	_winWidth = width;
 	_winHeight = height;
+	_fullscreen = false;
 
 	return createWindow();
 }
@@ -65,11 +66,26 @@ void Window::setTitle(std::string title)
 	SetWindowText(_winHandle, _winTitle.c_str());
 }
 
-bool Window::setSize(int width, int height)
+bool Window::setSize(int width, int height) //TODO: Grafiikkakontekstin muutos ku ikkunan koko muuttuu
 {
 	_winWidth = width;
 	_winHeight = height;
-	return SetWindowPos(_winHandle, HWND_TOPMOST, NULL, NULL, _winWidth, _winHeight, SWP_NOMOVE);
+
+	_winRect.left = 0;
+	_winRect.top = 0;
+	_winRect.right = _winWidth;
+	_winRect.bottom = _winHeight;
+
+	AdjustWindowRect(&_winRect, WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, FALSE);
+
+	SetWindowPos(_winHandle, HWND_TOPMOST, NULL, NULL, (_winRect.right - _winRect.left), (_winRect.bottom - _winRect.top), SWP_NOMOVE);
+
+	//_glContext.clean();
+	//_glContext.init(_winHandle);
+	//_glContext.debug_resetContext();
+
+
+	return true;
 }
 
 void Window::close()
@@ -97,25 +113,70 @@ BOOL Window::createWindow()
 	return initInstance(_winInstance, 1);
 }
 
+bool Window::setFullscreen(bool fullscreen) //TODO: Grafiikkakontekstin muutos ku ikkunan koko muuttuu
+{
+
+	if (!_fullscreen)
+	{
+		if (fullscreen)
+		{
+			_savedWindowClass = _wcex;
+			_savedWindowClass.style = GetWindowLong(_winHandle, GWL_STYLE);
+			GetWindowRect(_winHandle, &_winRect);
+		}
+		else return false;
+
+		SetWindowLong(_winHandle, GWL_STYLE,
+			_savedWindowClass.style &~(WS_CAPTION | WS_THICKFRAME));
+		SetWindowLong(_winHandle, GWL_EXSTYLE,
+			_savedWindowClass.style &~(WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE | WS_EX_STATICEDGE));
+
+
+		MONITORINFO monitorInfo;
+		monitorInfo.cbSize = sizeof(monitorInfo);
+		GetMonitorInfo(MonitorFromWindow(_winHandle, MONITOR_DEFAULTTONEAREST), &monitorInfo);
+		RECT monitor = monitorInfo.rcMonitor;
+		SetWindowPos(_winHandle, HWND_TOPMOST, monitor.left, monitor.top, monitor.right-monitor.left, monitor.bottom-monitor.top, SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED); 
+
+		//TODO:T‰h‰n assertioita tai debugshitti‰ plssss koska SetWindowPos ei v‰lttis onnistu
+	}
+
+
+	if (_fullscreen)
+	{
+		if (!fullscreen)
+		{
+			SetWindowLong(_winHandle, GWL_STYLE, _savedWindowClass.style);
+			//SetWindowLong(_winHandle, GWL_EXSTYLE, _savedWindowClass.style); // ei v‰lttis pakollinen miss‰‰n m‰‰rin
+			RECT newMonitor = _winRect; //ei kanssi gettaa suoraan _winRecti‰ miss‰‰n yhteydess‰
+			
+			SetWindowPos(_winHandle, NULL, _winRect.left, _winRect.top, (_winRect.right - _winRect.left), (_winRect.bottom - _winRect.top), SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+
+		}
+		else return false;
+
+	}
+	
+	_fullscreen = fullscreen;
+}
+
 ATOM Window::registerClass(HINSTANCE _instance)
 {
-	WNDCLASSEX wcex;
+	_wcex.cbSize = sizeof(WNDCLASSEX);
 
-	wcex.cbSize = sizeof(WNDCLASSEX);
+	_wcex.style = CS_HREDRAW | CS_VREDRAW;
+	_wcex.lpfnWndProc = &Window::routeWndProc;
+	_wcex.cbClsExtra = 0;
+	_wcex.cbWndExtra = 0;
+	_wcex.hInstance = _instance;
+	_wcex.hIcon = NULL;	// LoadIcon(_instance, IDI_ERROR);
+	_wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	_wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	_wcex.lpszMenuName = NULL;
+	_wcex.lpszClassName = _winClassName;
+	_wcex.hIconSm = NULL;	//LoadIcon(_wcex.hInstance, IDI_ASTERISK);
 
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = &Window::routeWndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
-	wcex.hInstance = _instance;
-	wcex.hIcon = LoadIcon(_instance, IDI_ERROR);
-	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = _winClassName;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_ASTERISK);
-
-	return RegisterClassEx(&wcex);
+	return RegisterClassEx(&_wcex);
 }
 
 BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
@@ -126,9 +187,10 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	winRect.top = 0;
 	winRect.right = _winWidth;
 	winRect.bottom = _winHeight;
+	AdjustWindowRect(&winRect, WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, FALSE);
 
-	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
-	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(),	WS_CAPTION |WS_SYSMENU |WS_MINIMIZEBOX|WS_MAXIMIZEBOX , CW_USEDEFAULT, 0, winRect.right, winRect.bottom, NULL, NULL, instance, NULL);
+	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(), WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, (winRect.right - winRect.left), (winRect.bottom - winRect.top), NULL, NULL, instance, NULL);
+
 
 	if (!_winHandle)
 		return FALSE;
@@ -146,7 +208,6 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
-	HDC hdc;
 
 	switch (message)
 	{
@@ -154,7 +215,7 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		wmId = LOWORD(wparam);
 		wmEvent = HIWORD(wparam);
 	case WM_PAINT:
-		hdc = BeginPaint(window, &ps);
+		_hdc = BeginPaint(window, &ps);
 
 		EndPaint(window, &ps);
 		break;
