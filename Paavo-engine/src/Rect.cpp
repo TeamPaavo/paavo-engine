@@ -3,50 +3,9 @@
 #include <GL\glew.h>
 #include <FreeImage.h>
 
+#include "../include/TextureManager.h"
+
 using namespace pv;
-
-GLuint loadTexture(const char* filename)
-{
-	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-
-	FIBITMAP* image(0);
-	BYTE* imagedata(0);
-	unsigned int width(0), height(0);
-	GLuint texId;
-
-	fif = FreeImage_GetFileType(filename, 0);
-	if (fif == FIF_UNKNOWN)
-		fif = FreeImage_GetFIFFromFilename(filename);
-	if (fif == FIF_UNKNOWN) {
-		printf("fif unknown\n");
-		exit(1);
-	}
-
-	if (FreeImage_FIFSupportsReading(fif))
-		image = FreeImage_Load(fif, filename);
-
-	if (!image) {
-		printf("kuvan lataus ei onnistunut\n");
-		exit(1);
-	}
-
-	imagedata = FreeImage_GetBits(image);
-	width = FreeImage_GetWidth(image);
-	height = FreeImage_GetHeight(image);
-
-	if ((imagedata == 0) || (width == 0) || (height == 0)) {
-		printf("imagedata mattaa\n");
-		exit(1);
-	}
-
-	//printf("%d, %d\n", width, height);
-
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, imagedata);
-	FreeImage_Unload(image);
-	return texId;
-}
 
 Rect::Rect(float x, float y, float width, float height, pv::Window& window)
 	:_win(window)
@@ -91,7 +50,7 @@ Rect::Rect(float x, float y, float width, float height, pv::Window& window)
 	glVertexAttribPointer(_texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
 
 	glActiveTexture(GL_TEXTURE0);
-	_texId = loadTexture("texture.png");
+	_texId = TextureManager::getInstance()->load("texture.png");
 	glUniform1i(glGetUniformLocation(_win.getShader(), "tex"), 0);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

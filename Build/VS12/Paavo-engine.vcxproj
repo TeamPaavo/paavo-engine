@@ -85,6 +85,7 @@
     <ClCompile Include="..\..\Paavo-engine\src\ResourceManager.cpp" />
     <ClCompile Include="..\..\paavo-engine\src\Shader.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\Texture.cpp" />
+    <ClCompile Include="..\..\Paavo-engine\src\TextureManager.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\Vertex.cpp" />
     <ClCompile Include="..\..\paavo-engine\src\Window.cpp" />
   </ItemGroup>
@@ -96,6 +97,7 @@
     <ClInclude Include="..\..\Paavo-engine\include\ResourceManager.h" />
     <ClInclude Include="..\..\paavo-engine\include\Shader.h" />
     <ClInclude Include="..\..\Paavo-engine\include\Texture.h" />
+    <ClInclude Include="..\..\Paavo-engine\include\TextureManager.h" />
     <ClInclude Include="..\..\Paavo-engine\include\Vertex.h" />
     <ClInclude Include="..\..\paavo-engine\include\Window.h" />
   </ItemGroup>
