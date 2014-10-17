@@ -12,6 +12,7 @@ GLContext::~GLContext()
 {
 }
 
+
 void GLContext::init(HWND handle)
 {
 	_winHandle = handle;
@@ -43,8 +44,20 @@ void GLContext::init(HWND handle)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+	
 	_defaultShader.load("shaders/vertexshader.glsl", "shaders/fragmentshader.glsl");
-	_defaultShader.use();
+	_defaultShader.use(initOrtho());
+	
+}
+
+
+glm::mat4 GLContext::initOrtho()
+{
+	int coordinates[4];
+	glGetIntegerv(GL_VIEWPORT, coordinates);																									//Getting viewport coordinates
+	glm::mat4 projection = glm::ortho((float)coordinates[0], (float)coordinates[2], (float)coordinates[3], (float)coordinates[1], -1.0f, 1.0f); // And matching projection to viewport
+
+	return projection;
 }
 
 void GLContext::clearColor(float r, float g, float b, float a)

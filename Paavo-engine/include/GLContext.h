@@ -3,7 +3,8 @@
 #include <vector>
 #include <Windows.h>
 #include <GL/glew.h>
-
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 #include "Shader.h"
 
 namespace pv
@@ -50,14 +51,17 @@ namespace pv
 
 		GLuint getShader();
 
+		
+
 	private:
+
 		HWND _winHandle;
 		HDC _hDc;
 		HGLRC _hGlrc;
 		PIXELFORMATDESCRIPTOR _pfd;
 		int _pixelFormat;
-
 		Shader _defaultShader;
+		glm::mat4 initOrtho();
 
 	};
 

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <GL\glew.h>
+#include <assert.h>
+#include <glm\glm.hpp>
+
 
 namespace pv 
 {
@@ -34,6 +37,8 @@ namespace pv
 		/**
 		 * Sets shader program active.
 		 */
+		void use(glm::mat4 projection);
+
 		void use();
 
 		GLuint getProgram();
@@ -42,6 +47,7 @@ namespace pv
 		GLuint _vertexShaderId;
 		GLuint _fragmentShaderId;
 		GLuint _programId;
+		GLint _projectionId;
 
 	};
 

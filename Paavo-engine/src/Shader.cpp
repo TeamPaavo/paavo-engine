@@ -26,6 +26,7 @@ Shader::~Shader()
 Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName)
 {
 	load(vertexFileName, fragmentFileName);
+	
 }
 
 bool Shader::load(const std::string& vertexFileName, const std::string& fragmentFileName)
@@ -97,6 +98,16 @@ bool Shader::load(const std::string& vertexFileName, const std::string& fragment
 
 	return returnvalue;
 
+}
+
+
+void Shader::use(glm::mat4 projection)
+{
+	GLint _projectionId = glGetUniformLocation(_programId, "projection");
+	assert(_projectionId >= 0);
+
+	glUseProgram(_programId);
+	glUniformMatrix4fv(_projectionId, 1, GL_FALSE, reinterpret_cast<const float*>(&projection));
 }
 
 void Shader::use()
