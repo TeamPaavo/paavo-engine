@@ -17,15 +17,15 @@ Rect::Rect(float x, float y, float width, float height, pv::Window& window)
 
 	_vertices = {
 		// x, y,   r, g, b,   u, v
-		_x, _y, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-		_x, _y - _height, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-		_x + _width, _y - _height, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-		_x + _width, _y, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+		_x, _y, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+		_x, _y + _height, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		_x + _width, _y + _height, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		_x + _width, _y, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
 	};
 
 	_elements = {
 		0, 1, 2,
-		3, 0, 2
+		0, 2, 3
 	};
 
 	glGenBuffers(1, &_vbo);
