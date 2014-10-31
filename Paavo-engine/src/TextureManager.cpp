@@ -38,7 +38,7 @@ GLuint TextureManager::load(const std::string& filename)
 		if (fif == FIF_UNKNOWN)
 			fif = FreeImage_GetFIFFromFilename(filename.c_str());
 		if (fif == FIF_UNKNOWN) {
-			printf("fif unknown\n");
+			printf("Free image filename unknown\n");
 			exit(1);
 		}
 
@@ -46,7 +46,7 @@ GLuint TextureManager::load(const std::string& filename)
 			image = FreeImage_Load(fif, filename.c_str());
 
 		if (!image) {
-			printf("kuvan lataus ei onnistunut\n");
+			printf("Attempt to load image failed\n");
 			exit(1);
 		}
 

@@ -80,24 +80,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\paavo-engine\src\GLContext.cpp" />
+    <ClCompile Include="..\..\Paavo-engine\src\Primitive.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\Rect.cpp" />
-    <ClCompile Include="..\..\Paavo-engine\src\Resource.cpp" />
-    <ClCompile Include="..\..\Paavo-engine\src\ResourceManager.cpp" />
     <ClCompile Include="..\..\paavo-engine\src\Shader.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\Texture.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\TextureManager.cpp" />
+    <ClCompile Include="..\..\Paavo-engine\src\Triangle.cpp" />
     <ClCompile Include="..\..\Paavo-engine\src\Vertex.cpp" />
     <ClCompile Include="..\..\paavo-engine\src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\paavo-engine\include\defines.h" />
     <ClInclude Include="..\..\paavo-engine\include\GLContext.h" />
+    <ClInclude Include="..\..\Paavo-engine\include\Primitive.h" />
     <ClInclude Include="..\..\Paavo-engine\include\Rect.h" />
-    <ClInclude Include="..\..\Paavo-engine\include\Resource.h" />
-    <ClInclude Include="..\..\Paavo-engine\include\ResourceManager.h" />
     <ClInclude Include="..\..\paavo-engine\include\Shader.h" />
     <ClInclude Include="..\..\Paavo-engine\include\Texture.h" />
     <ClInclude Include="..\..\Paavo-engine\include\TextureManager.h" />
+    <ClInclude Include="..\..\Paavo-engine\include\Triangle.h" />
     <ClInclude Include="..\..\Paavo-engine\include\Vertex.h" />
     <ClInclude Include="..\..\paavo-engine\include\Window.h" />
   </ItemGroup>
