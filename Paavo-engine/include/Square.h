@@ -6,13 +6,12 @@ namespace pv
 {
 	namespace Primitive
 	{
-		class PAAVO_EXPORT Triangle
+		class PAAVO_EXPORT Square
 		{
 		public:
-			Triangle(float size, float x, float y, Window &window);
-			~Triangle();
+			Square(float size, float x, float y, Window &window);
+			~Square(); 
 			void draw();
-			void move(float x, float y);
 
 		private:
 			std::vector<float> _vertices;
@@ -29,8 +28,9 @@ namespace pv
 			int _colAttrib;
 
 			Window& _win;
+			
 		};
-		
 	}
 
-}//namespace pv
+} //namespace pv
+
