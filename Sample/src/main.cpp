@@ -16,7 +16,12 @@ int main()
 	while (win.update()){
 		win.clearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		sprite2.draw();
-		sprite3.draw();
+		//sprite3.draw();
+
+
+		//window.getInput(input);
+		//if (input == enum_aerrow_dowm)
+		//	blockinson.move(left);
 
 		win.swap();
 	}

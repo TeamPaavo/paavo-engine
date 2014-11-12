@@ -7,6 +7,9 @@ using namespace pv;
 Window::Window()
 {
 	_winClassName = L"Paavo-engine-window";
+
+	
+
 }
 
 Window::Window(const std::string& title, int width, int height)
@@ -204,6 +207,34 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	return TRUE;
 }
 
+
+
+int Window::giveInput(WPARAM wparam)
+{
+	switch (wparam)
+	{
+	case VK_DOWN:
+		_inputBuffer.push_back(KEYBOARD::DOWN);
+		break;
+
+	case VK_UP:
+		_inputBuffer.push_back(KEYBOARD::UP);
+		break;
+
+	case VK_RIGHT:
+		_inputBuffer.push_back(KEYBOARD::RIGHT);
+		break;
+
+	case VK_LEFT:
+		_inputBuffer.push_back(KEYBOARD::LEFT);
+		break;
+	
+	default:
+		return -1;
+	}
+	
+}
+
 int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
@@ -214,16 +245,21 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 	case WM_COMMAND:
 		wmId = LOWORD(wparam);
 		wmEvent = HIWORD(wparam);
+
 	case WM_PAINT:
 		_hdc = BeginPaint(window, &ps);
-
 		EndPaint(window, &ps);
 		break;
+
 	case WM_DESTROY:
 		close();
 		break;
-	default:
 
+	case WM_KEYDOWN:
+		giveInput(wparam);
+		break;
+
+	default:		
 		return DefWindowProc(window, message, wparam, lparam);
 	}
 

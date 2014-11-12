@@ -5,12 +5,26 @@
 #include <tchar.h>
 
 #include <vector>
-
+#include <deque>
+#include <list>
 #include "defines.h"
 
 #include "GLContext.h"
 
 namespace pv {
+
+	enum KEYBOARD
+	{
+		DOWN,
+		UP,
+		LEFT,
+		RIGHT,
+		W,
+		A,
+		S,
+		D
+	};
+
 	/**
 	 * Class for creating and handling windows.
 	 */
@@ -98,6 +112,9 @@ namespace pv {
 		GLuint getShader();
 
 
+		int giveInput(WPARAM wparam);
+		//int getInput(std::deque <KEYBOARD> inputBuffer);
+
 	private:
 		// Private members needed for window creation.
 		HWND _winHandle;
@@ -123,6 +140,9 @@ namespace pv {
 		// This method gets current windows handle and our stored pointer to its class and then routes
 		// event handling to the objects own wndProc -method.
 		static LRESULT CALLBACK routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+
+		std::deque <KEYBOARD> &_inputBuffer;
+		
 
 	};
 
