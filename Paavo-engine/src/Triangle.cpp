@@ -9,7 +9,8 @@ _win(window)
 	_size = size;
 	_x = x;
 	_y = y;
-	
+	_offX = 0.0f;
+	_offY = 0.0f;
 	_vertices = {
 
 	_x, _y, 1.0f, 1.0f, 1.0f,
@@ -38,27 +39,22 @@ _win(window)
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
+	_offsetUnif = glGetUniformLocation(_win.getShader(), "offset");
+	assert(_offsetUnif >= 0);
+	glUniform2f(_offsetUnif, 0.0f, 0.0f);
 
 }
 
 void Triangle::move(float x, float y)
 {
-	_x += x;
-	_y += y;
+	_offX += x;
+	_offY += y;
+}
 
-	_vertices = {
-
-		_x, _y, 1.0f, 1.0f, 1.0f,
-		_x, _y + _size, 1.0f, 1.0f, 1.0f,
-		_x + _size, _y + _size, 1.0f, 1.0f, 1.0f
-
-	};
-
-	
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferSubData(_vbo, 0, _vertices.size()*sizeof(float), &_vertices.at(0));
-	glBindBuffer(GL_ARRAY_BUFFER,0);
-
+void Triangle::setPosition(float x, float y)
+{
+	_offX = x - _x;
+	_offY = y - _y;
 }
 
 
@@ -74,6 +70,7 @@ void Triangle::draw()
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
+	glUniform2f(_offsetUnif, _offX, _offY);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 }
 

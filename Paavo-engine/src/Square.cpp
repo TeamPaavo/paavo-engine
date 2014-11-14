@@ -9,6 +9,8 @@ Square::Square(float size, float x, float y, Window &window)
 	_size = size;
 	_x = x;
 	_y = y;
+	_offX = 0;
+	_offY = 0;
 
 	_vertices = {
 
@@ -41,7 +43,23 @@ Square::Square(float size, float x, float y, Window &window)
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
+	_offsetUnif = glGetUniformLocation(_win.getShader(), "offset");
+	assert(_offsetUnif >= 0);
+	glUniform2f(_offsetUnif, 0.0f, 0.0f);
 }
+
+void Square::move(float x, float y)
+{
+	_offX += x;
+	_offY += y;
+}
+
+void Square::setPosition(float x, float y)
+{
+	_offX = x-_x;
+	_offY = y-_y;
+}
+
 
 void Square::draw()
 {
@@ -55,6 +73,7 @@ void Square::draw()
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
+	glUniform2f(_offsetUnif, _offX, _offY);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
