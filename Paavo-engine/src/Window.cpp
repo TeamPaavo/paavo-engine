@@ -220,20 +220,45 @@ int Window::giveInput(WPARAM wparam)
 	{
 	case VK_DOWN:
 		_lastInput = KEYBOARD::DOWN;
+		std::cout << "DOWN" << std::endl;
 		break;
 
 	case VK_UP:
 		_lastInput = KEYBOARD::UP;
+		std::cout << "UP" << std::endl;
 		break;
 
 	case VK_RIGHT:
 		_lastInput = KEYBOARD::RIGHT;
+		std::cout << "RIGHT" << std::endl;
 		break;
 
 	case VK_LEFT:
 		_lastInput = KEYBOARD::LEFT;
+		std::cout << "LEFT" << std::endl;
 		break;
 	
+	case 0x57:
+		_lastInput = KEYBOARD::W;
+		std::cout << "W" << std::endl;
+		break;
+	
+	case 0x41:
+		_lastInput = KEYBOARD::A;
+		std::cout << "A" << std::endl;
+		break;
+	
+	case 0x53:
+		_lastInput = KEYBOARD::S;
+		std::cout << "S" << std::endl;
+		break;
+	
+	case 0x44:
+		_lastInput = KEYBOARD::D;
+		std::cout << "D" << std::endl;
+		break;
+
+
 	default:
 		return -1;
 	}
