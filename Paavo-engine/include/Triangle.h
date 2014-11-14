@@ -14,6 +14,8 @@ namespace pv
 			void draw();
 			void move(float x, float y);
 			void setPosition(float x, float y);
+			void setColor(float r, float g, float b);
+
 
 		private:
 			std::vector<float> _vertices;
@@ -24,6 +26,9 @@ namespace pv
 			float _size;
 			float _offX;
 			float _offY;
+			float _r;
+			float _g;
+			float _b;
 
 			unsigned int _vbo;
 			unsigned int _ebo;
@@ -31,6 +36,7 @@ namespace pv
 			int _posAttrib;
 			int _colAttrib;
 			int _offsetUnif;
+			int _colUnif;
 
 			Window& _win;
 		};

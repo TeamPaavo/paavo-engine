@@ -57,12 +57,18 @@ void Triangle::setPosition(float x, float y)
 	_offY = y - _y;
 }
 
+void Triangle::setColor(float r, float g, float b)
+{
+	_r = r;
+	_g = g;
+	_b = b;
+}
+
 
 void Triangle::draw()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-
 
 	glEnableVertexAttribArray(_posAttrib);
 	glVertexAttribPointer(_posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
@@ -71,8 +77,10 @@ void Triangle::draw()
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
 	glUniform2f(_offsetUnif, _offX, _offY);
+	glUniform3f(_colUnif, _r, _g, _b);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 }
+
 
 
 Triangle::~Triangle()

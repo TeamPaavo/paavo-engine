@@ -14,10 +14,10 @@ Square::Square(float size, float x, float y, Window &window)
 
 	_vertices = {
 
-		_x, _y, 1.0f, 1.0f, 1.0f,
-		_x, _y + _size, 1.0f, 1.0f, 1.0f,
-		_x + size, _y + _size, 1.0f, 1.0f, 1.0f,
-		_x + size, _y, 1.0f, 1.0f, 1.0f
+		_x, _y, 0.0f, 0.0f, 0.0f,
+		_x, _y + _size, 0.0f, 0.0f, 0.0f,
+		_x + size, _y + _size, 0.0f, 0.0f, 0.0f,
+		_x + size, _y, 0.0f, 0.0f, 0.0f
 
 	};
 
@@ -43,9 +43,13 @@ Square::Square(float size, float x, float y, Window &window)
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
+	_colUnif = _colUnif = glGetUniformLocation(_win.getShader(), "unifcolor");
+	assert(_colUnif >= 0);
+	glUniform3f(_colUnif, 1.0f, 1.0f,1.0f);
+
 	_offsetUnif = glGetUniformLocation(_win.getShader(), "offset");
 	assert(_offsetUnif >= 0);
-	glUniform2f(_offsetUnif, 0.0f, 0.0f);
+	glUniform3f(_offsetUnif, 0.0f, 0.0f,0.0f);
 }
 
 void Square::move(float x, float y)
@@ -58,6 +62,13 @@ void Square::setPosition(float x, float y)
 {
 	_offX = x-_x;
 	_offY = y-_y;
+}
+
+void Square::setColor(float r, float g, float b)
+{
+	_r = r;
+	_g = g;
+	_b = b;
 }
 
 
@@ -74,6 +85,7 @@ void Square::draw()
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
 	glUniform2f(_offsetUnif, _offX, _offY);
+	glUniform3f(_colUnif, _r, _g, _b);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
