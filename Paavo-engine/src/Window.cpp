@@ -7,7 +7,6 @@ using namespace pv;
 Window::Window()
 {
 	_winClassName = L"Paavo-engine-window";
-
 	
 
 }
@@ -207,6 +206,12 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	return TRUE;
 }
 
+KEYBOARD Window::getInput()
+{	
+	return _lastInput;
+
+}
+
 
 
 int Window::giveInput(WPARAM wparam)
@@ -214,19 +219,19 @@ int Window::giveInput(WPARAM wparam)
 	switch (wparam)
 	{
 	case VK_DOWN:
-		_inputBuffer.push_back(KEYBOARD::DOWN);
+		_lastInput = KEYBOARD::DOWN;
 		break;
 
 	case VK_UP:
-		_inputBuffer.push_back(KEYBOARD::UP);
+		_lastInput = KEYBOARD::UP;
 		break;
 
 	case VK_RIGHT:
-		_inputBuffer.push_back(KEYBOARD::RIGHT);
+		_lastInput = KEYBOARD::RIGHT;
 		break;
 
 	case VK_LEFT:
-		_inputBuffer.push_back(KEYBOARD::LEFT);
+		_lastInput = KEYBOARD::LEFT;
 		break;
 	
 	default:

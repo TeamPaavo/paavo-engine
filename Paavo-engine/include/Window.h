@@ -8,7 +8,6 @@
 #include <deque>
 #include <list>
 #include "defines.h"
-
 #include "GLContext.h"
 
 namespace pv {
@@ -130,6 +129,7 @@ namespace pv {
 		int _winWidth;
 		int _winHeight;
 		bool _fullscreen;
+		KEYBOARD getInput();
 
 		// Private methods for window creation.
 		BOOL createWindow();
@@ -141,7 +141,7 @@ namespace pv {
 		// event handling to the objects own wndProc -method.
 		static LRESULT CALLBACK routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 
-		std::deque <KEYBOARD> &_inputBuffer;
+		KEYBOARD _lastInput;
 		
 
 	};
