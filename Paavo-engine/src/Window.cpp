@@ -31,7 +31,7 @@ bool Window::create(const std::string& title, int width, int height)
 	_winWidth = width;
 	_winHeight = height;
 	_fullscreen = false;
-
+	_inputVector = new std::vector < KEYBOARD >;
 	return createWindow();
 }
 
@@ -193,7 +193,6 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 
 	_winHandle = CreateWindow(_winClassName, (TCHAR*)_winTitle.c_str(), WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, (winRect.right - winRect.left), (winRect.bottom - winRect.top), NULL, NULL, instance, NULL);
 
-
 	if (!_winHandle)
 		return FALSE;
 
@@ -206,62 +205,61 @@ BOOL Window::initInstance(HINSTANCE instance, int cmdShow)
 	return TRUE;
 }
 
-KEYBOARD Window::getInput()
+bool Window::isKeyDown(KEYBOARD key)
 {	
-	return _lastInput;
+	if (_inputVector->size() > 0)
+	{
+		std::vector<KEYBOARD>::iterator it = _inputVector->begin();
 
+		while (it != _inputVector->end())
+		{
+			if ((*it) == key)
+				return true;
+			it++;
+		}
+	}
+	return false;
 }
 
-
-
-int Window::giveInput(WPARAM wparam)
+void Window::addInput(WPARAM wparam)
 {
-	switch (wparam)
+	KEYBOARD key = toKey(wparam);
+
+	_inputVector->push_back(key);
+	
+}
+
+void Window::removeInput(WPARAM wparam)
+{
+	if (_inputVector->size() > 0)
 	{
-	case VK_DOWN:
-		_lastInput = KEYBOARD::DOWN;
-		std::cout << "DOWN" << std::endl;
-		break;
+		std::vector<KEYBOARD>::iterator it = _inputVector->begin();
+		KEYBOARD key = toKey(wparam);
 
-	case VK_UP:
-		_lastInput = KEYBOARD::UP;
-		std::cout << "UP" << std::endl;
-		break;
-
-	case VK_RIGHT:
-		_lastInput = KEYBOARD::RIGHT;
-		std::cout << "RIGHT" << std::endl;
-		break;
-
-	case VK_LEFT:
-		_lastInput = KEYBOARD::LEFT;
-		std::cout << "LEFT" << std::endl;
-		break;
-	
-	case 0x57:
-		_lastInput = KEYBOARD::W;
-		std::cout << "W" << std::endl;
-		break;
-	
-	case 0x41:
-		_lastInput = KEYBOARD::A;
-		std::cout << "A" << std::endl;
-		break;
-	
-	case 0x53:
-		_lastInput = KEYBOARD::S;
-		std::cout << "S" << std::endl;
-		break;
-	
-	case 0x44:
-		_lastInput = KEYBOARD::D;
-		std::cout << "D" << std::endl;
-		break;
-
-
-	default:
-		return -1;
+		while (it != _inputVector->end())
+		{
+			if ((*it) == key)
+				it = _inputVector->erase(it);
+			else
+				it++;
+		}
 	}
+}
+
+KEYBOARD Window::toKey(WPARAM wparam)
+{
+	if (wparam == VK_DOWN)
+		return KEYBOARD::DOWN;
+
+	if (wparam == VK_UP)
+		return KEYBOARD::UP;
+
+	if (wparam == VK_RIGHT)
+		return KEYBOARD::RIGHT;
+
+	if (wparam == VK_LEFT)
+		return KEYBOARD::LEFT;
+
 	
 }
 
@@ -269,13 +267,12 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
-
 	switch (message)
 	{
 	case WM_COMMAND:
 		wmId = LOWORD(wparam);
 		wmEvent = HIWORD(wparam);
-
+		break;
 	case WM_PAINT:
 		_hdc = BeginPaint(window, &ps);
 		EndPaint(window, &ps);
@@ -286,10 +283,13 @@ int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 		break;
 
 	case WM_KEYDOWN:
-		giveInput(wparam);
+		addInput(wparam);
 		break;
 
-	default:		
+	case WM_KEYUP:
+		removeInput(wparam);
+		break;
+	default:
 		return DefWindowProc(window, message, wparam, lparam);
 	}
 

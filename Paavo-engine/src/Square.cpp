@@ -11,6 +11,10 @@ Square::Square(float size, float x, float y, Window &window)
 	_y = y;
 	_offX = 0;
 	_offY = 0;
+	_a = 1.0f;
+	_r = 1.0f;
+	_g = 1.0f;
+	_b = 1.0f;
 
 	_vertices = {
 
@@ -43,9 +47,14 @@ Square::Square(float size, float x, float y, Window &window)
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
-	_colUnif = _colUnif = glGetUniformLocation(_win.getShader(), "unifcolor");
+	_colUnif = glGetUniformLocation(_win.getShader(), "unifcolor");
 	assert(_colUnif >= 0);
 	glUniform3f(_colUnif, 1.0f, 1.0f,1.0f);
+
+	_alphaUnif = glGetUniformLocation(_win.getShader(), "unifalpha");
+	assert(_alphaUnif >= 0);
+	glUniform1f(_alphaUnif, 1.0f);
+
 
 	_offsetUnif = glGetUniformLocation(_win.getShader(), "offset");
 	assert(_offsetUnif >= 0);
@@ -71,6 +80,11 @@ void Square::setColor(float r, float g, float b)
 	_b = b;
 }
 
+void Square::setAlpha(float a)
+{
+	_a = a;
+}
+
 
 void Square::draw()
 {
@@ -86,6 +100,7 @@ void Square::draw()
 
 	glUniform2f(_offsetUnif, _offX, _offY);
 	glUniform3f(_colUnif, _r, _g, _b);
+	glUniform1f(_alphaUnif, _a);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 

@@ -100,7 +100,6 @@ bool Shader::load(const std::string& vertexFileName, const std::string& fragment
 
 }
 
-
 void Shader::use(glm::mat4 projection)
 {
 	_projectionId = glGetUniformLocation(_programId, "projection");

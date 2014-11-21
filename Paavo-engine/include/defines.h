@@ -9,6 +9,18 @@
 // Basic datatypes from glm
 namespace pv
 {
+	enum KEYBOARD
+	{
+		DOWN,
+		UP,
+		LEFT,
+		RIGHT,
+		W,
+		A,
+		S,
+		D,
+		NOTHING = -1
+	};
 
 	// Vectors
 	typedef glm::vec2 vec2;

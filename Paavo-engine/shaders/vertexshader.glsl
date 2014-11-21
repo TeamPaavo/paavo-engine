@@ -12,10 +12,11 @@ uniform mat4 projection;
 uniform mat4 world;
 uniform mat4 view;
 uniform vec2 offset;
+uniform vec3 unifcolor;
 
 void main()
 {
-	outcolor = color;
+	outcolor = color+unifcolor;
 	outtexcoord = texcoord;
 	gl_Position = projection * view * world * vec4(position+offset, 0.0, 1.0);
 }

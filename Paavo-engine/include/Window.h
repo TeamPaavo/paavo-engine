@@ -12,17 +12,7 @@
 
 namespace pv {
 
-	enum KEYBOARD
-	{
-		DOWN,
-		UP,
-		LEFT,
-		RIGHT,
-		W,
-		A,
-		S,
-		D
-	};
+	
 
 	/**
 	 * Class for creating and handling windows.
@@ -110,9 +100,8 @@ namespace pv {
 
 		GLuint getShader();
 
+		bool isKeyDown(KEYBOARD key);
 
-		int giveInput(WPARAM wparam);
-		//int getInput(std::deque <KEYBOARD> inputBuffer);
 
 	private:
 		// Private members needed for window creation.
@@ -129,20 +118,23 @@ namespace pv {
 		int _winWidth;
 		int _winHeight;
 		bool _fullscreen;
-		KEYBOARD getInput();
+	
 
 		// Private methods for window creation.
 		BOOL createWindow();
 		ATOM registerClass(HINSTANCE instance);
 		BOOL initInstance(HINSTANCE instance, int cmdShow);
 		virtual int wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
-
+		
 		// This method gets current windows handle and our stored pointer to its class and then routes
 		// event handling to the objects own wndProc -method.
 		static LRESULT CALLBACK routeWndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 
-		KEYBOARD _lastInput;
+		std::vector<KEYBOARD> *_inputVector;
 		
+		KEYBOARD toKey(WPARAM wparam);
+		void removeInput(WPARAM wparam);
+		void addInput(WPARAM wparam);
 
 	};
 
