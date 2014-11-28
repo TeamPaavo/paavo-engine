@@ -19,6 +19,7 @@ namespace pv
 		void setCameraPosition(GLfloat xPosition, GLfloat yPosition);
 		void moveCamera(GLfloat xMove, GLfloat yMove);
 		void rotateCamera(GLfloat rotate);
+		void scaleCamera(GLfloat xScale, GLfloat yScale, GLfloat zScale);
 
 
 		~Camera();
@@ -30,6 +31,7 @@ namespace pv
 
 		glm::mat4 _viewTransform;
 		glm::mat4 _viewRotation;
+		glm::mat4 _viewScale;
 		glm::mat4 _MVP;
 
 

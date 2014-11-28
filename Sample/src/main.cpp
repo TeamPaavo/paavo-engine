@@ -13,6 +13,12 @@ int main()
 	GLfloat cameraX, cameraY, moveX;
 	GLfloat rotate;
 
+	GLfloat scaleX, scaleY, scaleZ;
+
+	scaleX = 1;
+	scaleY = 1;
+	scaleZ = 1;
+
 	GLfloat cameraXpostion = 100;
 	GLfloat cameraYposition = 500;
 
@@ -50,7 +56,7 @@ int main()
 
 		camera.moveCamera(cameraX, cameraY);
 		camera.rotateCamera(rotate);
-
+		camera.scaleCamera(scaleX, scaleY, scaleZ);
 
 		if (win.isKeyDown(pv::KEYBOARD::S))
 			cameraY += 1.0f;
@@ -70,6 +76,19 @@ int main()
 		if (win.isKeyDown(pv::KEYBOARD::RIGHT))
 			rotate--;
 
+		if (win.isKeyDown(pv::KEYBOARD::UP))
+		{
+			scaleX += 0.1f;
+			scaleY += 0.05f;
+			scaleZ += 0.025f;
+		}
+
+		if (win.isKeyDown(pv::KEYBOARD::DOWN))
+		{
+			scaleX -= 0.05f;
+			scaleY -= 0.075f;
+			scaleZ -= 0.025f;
+		}
 		
 		win.swap();
 	}
