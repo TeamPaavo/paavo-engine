@@ -187,3 +187,6 @@ FakesAssemblies/
 Documentation
 /Paavo-engine/Doxyfile
 ext/
+Build/VS12/Paavo-engine.v12.suo
+Build/VS12/Paavo-engine.vcxproj
+Build/VS12/Paavo-engine.vcxproj.filters
