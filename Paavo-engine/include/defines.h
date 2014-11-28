@@ -19,6 +19,8 @@ namespace pv
 		A,
 		S,
 		D,
+		ESC,
+		ENTER,
 		NOTHING = -1
 	};
 

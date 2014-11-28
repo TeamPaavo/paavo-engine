@@ -4,6 +4,11 @@ using namespace pv;
 
 // Constructors & Destructor
 
+#define W_KEY 0x57
+#define A_KEY 0x41
+#define S_KEY 0x53
+#define D_KEY 0x44
+
 Window::Window()
 {
 	_winClassName = L"Paavo-engine-window";
@@ -260,7 +265,23 @@ KEYBOARD Window::toKey(WPARAM wparam)
 	if (wparam == VK_LEFT)
 		return KEYBOARD::LEFT;
 
-	
+	if (wparam == W_KEY)
+		return KEYBOARD::W;
+
+	if (wparam == A_KEY)
+		return KEYBOARD::A;
+
+	if (wparam == S_KEY)
+		return KEYBOARD::S;
+
+	if (wparam == D_KEY)
+		return KEYBOARD::D;
+
+	if (wparam == VK_ESCAPE)
+		return KEYBOARD::ESC;
+
+	if (wparam == VK_RETURN)
+		return KEYBOARD::ENTER;
 }
 
 int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
