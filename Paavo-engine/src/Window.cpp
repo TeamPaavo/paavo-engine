@@ -4,11 +4,6 @@ using namespace pv;
 
 // Constructors & Destructor
 
-#define W_KEY 0x57
-#define A_KEY 0x41
-#define S_KEY 0x53
-#define D_KEY 0x44
-
 Window::Window()
 {
 	_winClassName = L"Paavo-engine-window";
@@ -101,14 +96,23 @@ void Window::close()
 	PostQuitMessage(0);
 }
 
+void Window::use(std::string shader)
+{
+	_glContext.use(shader);
+}
+
 void Window::setPosition(int x, int y)
 {
 	SetWindowPos(_winHandle, HWND_TOPMOST, x, y, NULL, NULL, SWP_NOSIZE);
 }
 
-GLuint Window::getShader()
+GLuint Window::getShader(std::string shadername)
 {
-	return _glContext.getShader();
+	if (shadername == "colorshader")
+	return _glContext.getDefaultColorShader();
+
+	if (shadername == "textureshader")
+		return _glContext.getDefaultTextureShader();
 }
 
 // Private methods
@@ -145,7 +149,7 @@ bool Window::setFullscreen(bool fullscreen) //TODO: Grafiikkakontekstin muutos k
 		RECT monitor = monitorInfo.rcMonitor;
 		SetWindowPos(_winHandle, HWND_TOPMOST, monitor.left, monitor.top, monitor.right-monitor.left, monitor.bottom-monitor.top, SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED); 
 
-		//TODO:T‰h‰n assertioita tai debugshitti‰ plssss koska SetWindowPos ei v‰lttis onnistu
+		//TODO:T√§h√§n assertioita tai debugshitti√§ plssss koska SetWindowPos ei v√§lttis onnistu
 	}
 
 
@@ -154,8 +158,8 @@ bool Window::setFullscreen(bool fullscreen) //TODO: Grafiikkakontekstin muutos k
 		if (!fullscreen)
 		{
 			SetWindowLong(_winHandle, GWL_STYLE, _savedWindowClass.style);
-			//SetWindowLong(_winHandle, GWL_EXSTYLE, _savedWindowClass.style); // ei v‰lttis pakollinen miss‰‰n m‰‰rin
-			RECT newMonitor = _winRect; //ei kanssi gettaa suoraan _winRecti‰ miss‰‰n yhteydess‰
+			//SetWindowLong(_winHandle, GWL_EXSTYLE, _savedWindowClass.style); // ei v√§lttis pakollinen miss√§√§n m√§√§rin
+			RECT newMonitor = _winRect; //ei kanssi gettaa suoraan _winRecti√§ miss√§√§n yhteydess√§
 			
 			SetWindowPos(_winHandle, NULL, _winRect.left, _winRect.top, (_winRect.right - _winRect.left), (_winRect.bottom - _winRect.top), SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 
@@ -264,6 +268,8 @@ KEYBOARD Window::toKey(WPARAM wparam)
 
 	if (wparam == VK_LEFT)
 		return KEYBOARD::LEFT;
+	if (wparam == VK_SPACE)
+		return KEYBOARD::SPACE;
 
 	if (wparam == W_KEY)
 		return KEYBOARD::W;
@@ -282,6 +288,7 @@ KEYBOARD Window::toKey(WPARAM wparam)
 
 	if (wparam == VK_RETURN)
 		return KEYBOARD::ENTER;
+	
 }
 
 int Window::wndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
