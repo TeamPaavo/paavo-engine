@@ -49,7 +49,10 @@ namespace pv
 		*/
 		void clean();
 
-		GLuint getShader();
+		GLuint getDefaultTextureShader();
+		GLuint getDefaultColorShader();
+
+		void use(std::string shader);
 
 		
 
@@ -60,7 +63,7 @@ namespace pv
 		HGLRC _hGlrc;
 		PIXELFORMATDESCRIPTOR _pfd;
 		int _pixelFormat;
-		Shader _defaultShader;
+		Shader _defaultTextureShader,_defaultColorShader;
 		glm::mat4 initOrtho();
 
 	};
