@@ -16,8 +16,8 @@ namespace pv
 			void setPosition(float x, float y);
 			void setColor(float r, float g, float b);
 			void setAlpha(float a);
-			float getX(){ return _offX; }
-			float getY(){ return _offY; }
+			float getX(){ return _x+_offX; }
+			float getY(){ return _y+_offY; }
 		private:
 			std::vector<float> _vertices;
 			std::vector<unsigned int> _elements;
