@@ -10,6 +10,11 @@
 #include "defines.h"
 #include "GLContext.h"
 
+#define W_KEY 0x57
+#define A_KEY 0x41
+#define S_KEY 0x53
+#define D_KEY 0x44
+
 namespace pv {
 
 	
@@ -98,10 +103,11 @@ namespace pv {
 
 		bool setFullscreen(bool fullscreen);
 
-		GLuint getShader();
+		GLuint getShader(std::string shadername);
 
 		bool isKeyDown(KEYBOARD key);
 
+		void use(std::string shader);
 
 	private:
 		// Private members needed for window creation.
