@@ -11,6 +11,10 @@ _win(window)
 	_y = y;
 	_offX = 0.0f;
 	_offY = 0.0f;
+	_a = 1.0f;
+	_r = 1.0f;
+	_g = 1.0f;
+	_b = 1.0f;
 	_vertices = {
 
 	_x, _y, 1.0f, 1.0f, 1.0f,
@@ -31,15 +35,19 @@ _win(window)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elements.size() * sizeof(unsigned int), &_elements.front(), GL_STATIC_DRAW);
 
-	_posAttrib = glGetAttribLocation(_win.getShader(), "position");
+	_posAttrib = glGetAttribLocation(_win.getShader("colorshader"), "position");
 	glEnableVertexAttribArray(_posAttrib);
 	glVertexAttribPointer(_posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
 
-	_colAttrib = glGetAttribLocation(_win.getShader(), "color");
+	_colAttrib = glGetAttribLocation(_win.getShader("colorshader"), "color");
 	glEnableVertexAttribArray(_colAttrib);
 	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
-	_offsetUnif = glGetUniformLocation(_win.getShader(), "offset");
+	_alphaUnif = glGetUniformLocation(_win.getShader("colorshader"), "unifalpha");
+	assert(_alphaUnif >= 0);
+	glUniform1f(_alphaUnif, 1.0f);
+
+	_offsetUnif = glGetUniformLocation(_win.getShader("colorshader"), "offset");
 	assert(_offsetUnif >= 0);
 	glUniform2f(_offsetUnif, 0.0f, 0.0f);
 
@@ -64,6 +72,11 @@ void Triangle::setColor(float r, float g, float b)
 	_b = b;
 }
 
+void Triangle::setAlpha(float a)
+{
+	_a = a;
+}
+
 
 void Triangle::draw()
 {
@@ -78,6 +91,7 @@ void Triangle::draw()
 
 	glUniform2f(_offsetUnif, _offX, _offY);
 	glUniform3f(_colUnif, _r, _g, _b);
+	glUniform1f(_alphaUnif, _a);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 }
 
