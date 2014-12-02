@@ -43,13 +43,22 @@ void GLContext::init(HWND handle)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-
 	
-	_defaultShader.load("shaders/vertexshader.glsl", "shaders/fragmentshader.glsl");
-	_defaultShader.use(initOrtho());
+	_defaultColorShader.load("shaders/vertexshaderColor.glsl", "shaders/fragmentshaderColor.glsl");
+	_defaultTextureShader.load("shaders/vertexshaderTexture.glsl", "shaders/fragmentshaderTexture.glsl");
+	_defaultTextureShader.use(initOrtho());
+	_defaultColorShader.use(initOrtho());
 	
 }
 
+void GLContext::use(std::string shader)
+{
+	if (shader == "colorshader")
+		_defaultColorShader.use(initOrtho());
+	if (shader == "textureshader")
+		_defaultTextureShader.use(initOrtho());
+
+}
 
 glm::mat4 GLContext::initOrtho()
 {
@@ -82,7 +91,12 @@ void GLContext::clean()
 	wglDeleteContext(_hGlrc);
 }
 
-GLuint GLContext::getShader()
+GLuint GLContext::getDefaultTextureShader()
 {
-	return _defaultShader.getProgram();
+	return _defaultTextureShader.getProgram();
+}
+
+GLuint GLContext::getDefaultColorShader()
+{
+	return _defaultColorShader.getProgram();
 }
