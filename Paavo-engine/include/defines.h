@@ -15,6 +15,7 @@ namespace pv
 		UP,
 		LEFT,
 		RIGHT,
+		SPACE,
 		W,
 		A,
 		S,
