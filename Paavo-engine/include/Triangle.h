@@ -15,7 +15,9 @@ namespace pv
 			void move(float x, float y);
 			void setPosition(float x, float y);
 			void setColor(float r, float g, float b);
-
+			void setAlpha(float a);
+			float getX(){ return _x + _offX; }
+			float getY(){ return _y + _offY; }
 
 		private:
 			std::vector<float> _vertices;
@@ -29,6 +31,7 @@ namespace pv
 			float _r;
 			float _g;
 			float _b;
+			float _a;
 
 			unsigned int _vbo;
 			unsigned int _ebo;
@@ -37,6 +40,8 @@ namespace pv
 			int _colAttrib;
 			int _offsetUnif;
 			int _colUnif;
+			int _alphaUnif;
+
 
 			Window& _win;
 		};
