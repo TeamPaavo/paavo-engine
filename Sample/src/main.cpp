@@ -3,6 +3,9 @@
 #include "Triangle.h"
 #include "Camera.h"
 #include "Square.h"
+#include "Shader.h"
+#include "Sprite.h"
+#include "Mouse.h"
 
 #include <GL\glew.h>
 #include "..\FreeImage\Dist\FreeImage.h"
@@ -29,11 +32,11 @@ int main()
 
 	//pv::Triangle sprite3(300, 100, 100, 100, 100, win);
 	
-	pv::Camera camera(win.getShader());
+	pv::Camera camera(win.getShader("colorshader"));
 
 	camera.setCameraPosition(cameraXpostion, cameraYposition);
 
-	pv::Rect sprite2(100, 0, 100, 100, win);
+	//pv::Sprite sprite2(100, 0, 100, 100, win);
 
 
 
@@ -49,7 +52,7 @@ int main()
 
 		win.clearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-		sprite2.draw();
+		//sprite2.draw();
 		//sprite3.draw();
 
 

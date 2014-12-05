@@ -45,8 +45,8 @@ void GLContext::init(HWND handle)
 	glDepthFunc(GL_LESS);
 	
 	_defaultColorShader.load("shaders/vertexshaderColor.glsl", "shaders/fragmentshaderColor.glsl");
-	_defaultTextureShader.load("shaders/vertexshaderTexture.glsl", "shaders/fragmentshaderTexture.glsl");
-	_defaultTextureShader.use(initOrtho());
+	//_defaultTextureShader.load("shaders/vertexshaderTexture.glsl", "shaders/fragmentshaderTexture.glsl");
+	//_defaultTextureShader.use(initOrtho());
 	_defaultColorShader.use(initOrtho());
 	
 }
